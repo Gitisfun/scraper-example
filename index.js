@@ -13,12 +13,15 @@ import chromium from "@sparticuz/chromium";  // lightweight chromium helper
   
   // Extract title from h1.page-heading span[data-test="title"]
   const title = await page.$eval('h1.page-heading span[data-test="title"]', (element) => element.textContent.trim()).catch(() => null);
-  
+  const title2 = await page  .title();
+  console.log("✅ Page title:", title);
   if (title) {
     console.log("✅ Extracted title:", title);
   } else {
     console.warn("⚠️ Could not find title element");
   }
+
+  console.log("✅ Page title2:", title2);
 
   await browser.close();
 })();
