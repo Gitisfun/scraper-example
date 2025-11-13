@@ -1,34 +1,17 @@
-import puppeteer from "puppeteer";
-
-const url = "https://www.bol.com/nl/nl/";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";  // lightweight chromium helper
 
 (async () => {
-  try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--single-process",
-        "--no-zygote",
-      ],
-    });
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),  // <-- key line
+    headless: chromium.headless,
+  });
 
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded" });
+  const page = await browser.newPage();
+  await page.goto("https://www.bol.com/nl/nl/", { waitUntil: "domcontentloaded" });
+  const title = await page.title();
+  console.log("✅ Page title:", title);
 
-    // Example: grab the title
-    const title = await page.title();
-    console.log("✅ Page title:", title);
-
-    // Example: scrape something from Bol’s homepage
-    const promoText = await page.$eval("h1, h2, h3", el => el.textContent.trim());
-    console.log("📦 Example text:", promoText);
-
-    await browser.close();
-  } catch (err) {
-    console.error("❌ Scraper failed:", err);
-    process.exit(1);
-  }
+  await browser.close();
 })();
