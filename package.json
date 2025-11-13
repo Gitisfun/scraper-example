@@ -20,6 +20,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "puppeteer": "^24.30.0"
+    "@sparticuz/chromium": "^141.0.0",
+    "puppeteer-core": "^24.30.0"
   }
 }
